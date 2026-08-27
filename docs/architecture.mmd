@@ -1,0 +1,45 @@
+flowchart TD
+    subgraph Client["Browser"]
+        UI["React chat UI (Vite)\nexpandable routing trace per answer"]
+    end
+
+    subgraph EC2["AWS EC2 t3.micro (Free Tier) — Docker Compose"]
+        subgraph API["FastAPI backend :8000"]
+            EP1["POST /chat"]
+            EP2["GET /tickets/{id}"]
+            EP3["GET /health"]
+        end
+
+        subgraph LG["LangGraph state graph"]
+            R["Router / Intent\nDetection Agent"]
+            RAG["RAG / Knowledge\nAgent"]
+            TA["Ticket Agent"]
+            SG["Sensitive Guardrail\n(deterministic, no LLM)"]
+        end
+
+        RETR["Vectorless retrieval\n(in-memory, section-split docs)"]
+        DB[("SQLite tickets.db\nseeded from tickets.json")]
+        DOCS[["Markdown KB\nIT / HR / Expense / Onboarding"]]
+    end
+
+    LLM["Groq free-tier LLM\n(llama-3.3-70b-versatile)"]
+
+    UI -- "fetch /chat {query}" --> EP1
+    EP1 --> R
+    R -- "self_serve_question" --> RAG
+    R -- "new_ticket / ticket_status_check" --> TA
+    R -- "sensitive_escalation" --> SG
+    RAG -- "low confidence, hand back" --> R
+    RAG -- "reads" --> RETR
+    RETR -- "loads at startup" --> DOCS
+    RAG -- "reads (2nd KB source)" --> DB
+    TA -- "create / status / escalate / cancel" --> DB
+    R -. "LLM call" .-> LLM
+    RAG -. "LLM call" .-> LLM
+    TA -. "LLM call (field extraction only)" .-> LLM
+    RAG -- "answer + citations" --> EP1
+    TA -- "ticket result" --> EP1
+    SG -- "fixed message" --> EP1
+    EP1 -- "final_answer, trace, handled_by" --> UI
+    UI -.-> EP2
+    UI -.-> EP3

@@ -1,0 +1,202 @@
+[
+  {
+    "ticket_id": "TCK-1001",
+    "category": "IT - Access",
+    "subject": "VPN not connecting after recent update",
+    "description": "User reports VPN client fails to connect since the latest laptop update.",
+    "status": "Resolved",
+    "priority": "Medium",
+    "created_date": "2026-01-05",
+    "resolution": "Updated VPN client to version 6.3. Connection restored after restart."
+  },
+  {
+    "ticket_id": "TCK-1002",
+    "category": "IT - Access",
+    "subject": "Account locked after failed password resets",
+    "description": "User attempted self-service password reset 3 times and got locked out.",
+    "status": "Resolved",
+    "priority": "Medium",
+    "created_date": "2026-01-08",
+    "resolution": "Account unlocked manually by IT during business hours; user guided to self-service reset portal for future resets."
+  },
+  {
+    "ticket_id": "TCK-1003",
+    "category": "IT - Hardware",
+    "subject": "Laptop screen flickering intermittently",
+    "description": "Device is 8 months old, screen flickers under normal use.",
+    "status": "Resolved",
+    "priority": "High",
+    "created_date": "2026-01-10",
+    "resolution": "Covered under 12-month hardware warranty. Screen replaced free of charge."
+  },
+  {
+    "ticket_id": "TCK-1004",
+    "category": "IT - Software",
+    "subject": "Slack notifications not appearing",
+    "description": "Desktop notifications stopped working after OS update.",
+    "status": "Resolved",
+    "priority": "Low",
+    "created_date": "2026-01-12",
+    "resolution": "Cleared Slack cache and re-authenticated. Notifications resumed."
+  },
+  {
+    "ticket_id": "TCK-1005",
+    "category": "Finance - Reimbursement",
+    "subject": "Expense claim rejected - missing receipt",
+    "description": "Claim for client dinner (₹1,800) rejected due to missing receipt.",
+    "status": "Resolved",
+    "priority": "Low",
+    "created_date": "2026-01-14",
+    "resolution": "User resubmitted with scanned receipt within the 15-day appeal window; claim approved."
+  },
+  {
+    "ticket_id": "TCK-1006",
+    "category": "HR - Leave",
+    "subject": "Leave balance not reflecting approved leave",
+    "description": "Approved leave from last week is not showing as deducted in the portal.",
+    "status": "Resolved",
+    "priority": "Low",
+    "created_date": "2026-01-15",
+    "resolution": "Balance sync typically takes 2 business days; confirmed correct after refresh."
+  },
+  {
+    "ticket_id": "TCK-1007",
+    "category": "IT - Onboarding",
+    "subject": "New joiner VPN not provisioned within 24 hours",
+    "description": "New hire started Monday, VPN still not active by Wednesday.",
+    "status": "Resolved",
+    "priority": "High",
+    "created_date": "2026-01-16",
+    "resolution": "Manual provisioning completed by IT; root cause was a delayed HR-to-IT sync for the new hire record."
+  },
+  {
+    "ticket_id": "TCK-1008",
+    "category": "HR - Access",
+    "subject": "Cannot log into HR portal",
+    "description": "User gets an authentication error when accessing the HR portal.",
+    "status": "Resolved",
+    "priority": "Medium",
+    "created_date": "2026-01-18",
+    "resolution": "Routed to HR Systems support (not general IT). Password reset link issued."
+  },
+  {
+    "ticket_id": "TCK-1009",
+    "category": "Finance - Travel",
+    "subject": "Question about international per diem rates",
+    "description": "Employee traveling to Singapore for a client visit, unsure of per diem amount.",
+    "status": "Resolved",
+    "priority": "Low",
+    "created_date": "2026-01-19",
+    "resolution": "Directed to the Travel Portal, which lists destination-specific per diem rates."
+  },
+  {
+    "ticket_id": "TCK-1010",
+    "category": "IT - Software",
+    "subject": "Request to install Figma",
+    "description": "Design team member needs Figma desktop app installed.",
+    "status": "Resolved",
+    "priority": "Low",
+    "created_date": "2026-01-20",
+    "resolution": "Approved with manager justification attached; installed via package proxy."
+  },
+  {
+    "ticket_id": "TCK-1011",
+    "category": "IT - Hardware",
+    "subject": "Office printer not detected",
+    "description": "Printer not showing up on laptop while connected via VPN from a meeting room.",
+    "status": "Resolved",
+    "priority": "Low",
+    "created_date": "2026-01-21",
+    "resolution": "Printers are not accessible via VPN; user reconnected to office Wi-Fi directly and issue resolved."
+  },
+  {
+    "ticket_id": "TCK-1012",
+    "category": "HR - Benefits",
+    "subject": "Dependent not added to health insurance",
+    "description": "Employee's spouse missing from insurance portal despite being added during onboarding.",
+    "status": "Resolved",
+    "priority": "Medium",
+    "created_date": "2026-01-22",
+    "resolution": "Added within grace period after ticket raised; confirmed active coverage."
+  },
+  {
+    "ticket_id": "TCK-1013",
+    "category": "Finance - Reimbursement Delay",
+    "subject": "Approved reimbursement not credited after 10 business days",
+    "description": "Approved travel claim from 3 weeks ago still not credited.",
+    "status": "Resolved",
+    "priority": "Medium",
+    "created_date": "2026-01-23",
+    "resolution": "Escalated to Finance directly; payment processed the next business day."
+  },
+  {
+    "ticket_id": "TCK-1014",
+    "category": "Finance - Onboarding Expense",
+    "subject": "Confusion over home office setup allowance claim window",
+    "description": "New hire unsure by when the ₹15,000 setup allowance must be claimed.",
+    "status": "Resolved",
+    "priority": "Low",
+    "created_date": "2026-01-24",
+    "resolution": "Clarified: claimable within 90 days of the hybrid/remote arrangement being approved."
+  },
+  {
+    "ticket_id": "TCK-1015",
+    "category": "IT - Software",
+    "subject": "Zoom outage during scheduled meeting",
+    "description": "Zoom was inaccessible company-wide for about 20 minutes.",
+    "status": "Open",
+    "priority": "Medium",
+    "created_date": "2026-02-01",
+    "resolution": null
+  },
+  {
+    "ticket_id": "TCK-1016",
+    "category": "IT - Access",
+    "subject": "VPN issue from last week still unresolved",
+    "description": "User's VPN connectivity ticket from 6 days ago has not been picked up; requesting urgent attention.",
+    "status": "Open",
+    "priority": "Medium",
+    "created_date": "2026-01-27",
+    "resolution": null
+  },
+  {
+    "ticket_id": "TCK-1017",
+    "category": "IT - Software",
+    "subject": "Software install request no longer needed",
+    "description": "User requested a non-standard analytics tool but project requirements changed.",
+    "status": "Open",
+    "priority": "Low",
+    "created_date": "2026-01-29",
+    "resolution": null
+  },
+  {
+    "ticket_id": "TCK-1018",
+    "category": "IT - Hardware",
+    "subject": "Laptop upgrade request pending manager approval",
+    "description": "Engineer requesting RAM upgrade eligibility after 18 months, awaiting manager sign-off.",
+    "status": "In Progress",
+    "priority": "Medium",
+    "created_date": "2026-01-30",
+    "resolution": null
+  },
+  {
+    "ticket_id": "TCK-1019",
+    "category": "IT - Access",
+    "subject": "Unable to access production systems, blocking release",
+    "description": "Engineer cannot access any production system; deployment is blocked.",
+    "status": "Escalated",
+    "priority": "Critical",
+    "created_date": "2026-02-02",
+    "resolution": null
+  },
+  {
+    "ticket_id": "TCK-1020",
+    "category": "IT - Software",
+    "subject": "Duplicate software request ticket",
+    "description": "User accidentally submitted the same software request twice.",
+    "status": "Cancelled",
+    "priority": "Low",
+    "created_date": "2026-01-31",
+    "resolution": "Duplicate of TCK-1010; closed by user."
+  }
+]
