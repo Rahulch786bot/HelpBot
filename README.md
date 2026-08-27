@@ -79,6 +79,20 @@ curl -X POST http://localhost:8000/chat \
 Run through the queries in `eval/test-queries.md` this way, or just use them as the chat
 suggestion chips in the frontend.
 
+## 3b. Automated baseline check
+
+Once the backend is running (locally or deployed) with a real `GROQ_API_KEY` set, run every
+query from `eval/test-queries.md` against it in one shot:
+
+```bash
+cd backend
+python scripts/run_eval.py --url http://localhost:8000
+```
+
+This isn't automated grading (there's no ground-truth checker) — it just prints each query's
+`intent`, `handled_by`, final answer, and citations so you can eyeball them against the
+expectations in `eval/test-queries.md` before submitting.
+
 ## 4. Deploying to AWS (Free Tier)
 
 This targets a single **EC2 t2.micro / t3.micro** instance (Free Tier eligible), running both
