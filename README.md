@@ -129,9 +129,13 @@ should incur cost beyond the Free Tier allowance.
 
 4. **Build and start, pointing the frontend at the API through the nginx proxy**
    ```bash
-   export VITE_API_URL=http://<ec2-public-ip>/api
+   echo "VITE_API_URL=http://<ec2-public-ip>/api" > .env   # NOT export -- see note below
    docker compose up --build -d
    ```
+   Use a `.env` file in the repo root (which Compose reads automatically), not `export` +
+   `sudo docker compose ...` — `sudo` resets the shell environment by default, so an exported
+   `VITE_API_URL` silently gets dropped and the frontend build falls back to its
+   `http://localhost:8000` default, baked permanently into the JS bundle until rebuilt.
 
 5. **Verify**
    ```bash
