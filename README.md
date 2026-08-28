@@ -5,6 +5,9 @@ A 3-agent LangGraph system (Router / RAG-Knowledge / Ticket) fronting a fictiona
 policy docs with citations, raises tickets for genuine issues, and looks up/acts on existing
 tickets — with a hard guardrail that refuses to auto-handle HR grievance/harassment queries.
 
+**Live deployment:** http://16.171.27.40 (AWS EC2 Free Tier, `t3.micro` — see §4 for how this
+was set up)
+
 - Design docs: [`docs/HLD.md`](docs/HLD.md), [`docs/LLD.md`](docs/LLD.md),
   [`docs/architecture.mmd`](docs/architecture.mmd) (Mermaid — paste into
   [mermaid.live](https://mermaid.live) or view directly on GitHub)
@@ -102,8 +105,9 @@ should incur cost beyond the Free Tier allowance.
 1. **Launch the instance**
    - AMI: Ubuntu 24.04 LTS (or Amazon Linux 2023), instance type `t3.micro` (or `t2.micro` for
      the older Free Tier terms).
-   - Security group: allow inbound `22` (SSH, your IP only), `80` (HTTP, frontend), `8000`
-     (backend API — or proxy it through the frontend's nginx instead, see step 5).
+   - Security group: allow inbound `22` (SSH, your IP only) and `80` (HTTP, anywhere). Port 8000
+     is never opened publicly — `frontend/nginx.conf` reverse-proxies `/api/` to the backend
+     container over the internal Docker network, so port 80 serves both the UI and the API.
    - Attach/allocate an Elastic IP if you want a stable URL (still Free Tier while attached to a
      running instance).
 
@@ -123,20 +127,15 @@ should incur cost beyond the Free Tier allowance.
    nano backend/.env   # paste your GROQ_API_KEY
    ```
 
-4. **Point the frontend build at the public backend URL**
+4. **Build and start, pointing the frontend at the API through the nginx proxy**
    ```bash
-   export VITE_API_URL=http://<ec2-public-ip>:8000
+   export VITE_API_URL=http://<ec2-public-ip>/api
    docker compose up --build -d
    ```
 
-5. **(Optional, recommended) Serve everything on port 80** — add a reverse-proxy location for
-   `/api/` in `frontend/nginx.conf` pointing at `http://backend:8000/`, rebuild with
-   `VITE_API_URL=http://<ec2-public-ip>/api`, and close inbound port 8000 in the security
-   group. This avoids exposing the API on a second port.
-
-6. **Verify**
+5. **Verify**
    ```bash
-   curl http://<ec2-public-ip>:8000/health
+   curl http://<ec2-public-ip>/api/health
    ```
    Then open `http://<ec2-public-ip>` in a browser for the chat UI.
 
