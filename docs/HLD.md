@@ -33,8 +33,56 @@ the query moves through the system:
              └─────────────────────────────────────────
 ```
 
-See `architecture.mmd` for the full annotated diagram including the frontend, API layer, and
-data stores (renderable at mermaid.live or GitHub's native Mermaid preview).
+Full annotated diagram including the frontend, API layer, and data stores (also kept in sync at
+`architecture.mmd` for mermaid.live):
+
+```mermaid
+flowchart TD
+    subgraph Client["Browser"]
+        UI["React chat UI (Vite)\nexpandable routing trace per answer"]
+    end
+
+    subgraph EC2["AWS EC2 t3.micro (Free Tier) — Docker Compose"]
+        subgraph API["FastAPI backend :8000"]
+            EP1["POST /chat"]
+            EP2["GET /tickets/{id}"]
+            EP3["GET /health"]
+        end
+
+        subgraph LG["LangGraph state graph"]
+            R["Router / Intent\nDetection Agent"]
+            RAG["RAG / Knowledge\nAgent"]
+            TA["Ticket Agent"]
+            SG["Sensitive Guardrail\n(deterministic, no LLM)"]
+        end
+
+        RETR["Vectorless retrieval\n(in-memory, section-split docs)"]
+        DB[("SQLite tickets.db\nseeded from tickets.json")]
+        DOCS[["Markdown KB\nIT / HR / Expense / Onboarding"]]
+    end
+
+    LLM["Groq free-tier LLM\n(openai/gpt-oss-120b)"]
+
+    UI -- "fetch /chat {query}" --> EP1
+    EP1 --> R
+    R -- "self_serve_question" --> RAG
+    R -- "new_ticket / ticket_status_check" --> TA
+    R -- "sensitive_escalation" --> SG
+    RAG -- "low confidence, hand back" --> R
+    RAG -- "reads" --> RETR
+    RETR -- "loads at startup" --> DOCS
+    RAG -- "reads (2nd KB source)" --> DB
+    TA -- "create / status / escalate / cancel" --> DB
+    R -. "LLM call" .-> LLM
+    RAG -. "LLM call" .-> LLM
+    TA -. "LLM call (field extraction only)" .-> LLM
+    RAG -- "answer + citations" --> EP1
+    TA -- "ticket result" --> EP1
+    SG -- "fixed message" --> EP1
+    EP1 -- "final_answer, trace, handled_by" --> UI
+    UI -.-> EP2
+    UI -.-> EP3
+```
 
 ### Why LangGraph, and why this shape
 
@@ -111,7 +159,7 @@ section/tree-node level). This is called out as a known limitation in `writeup.m
 | Layer | Choice | Why |
 |---|---|---|
 | Orchestration | LangGraph | Required by the brief; gives explicit, inspectable state + routing. |
-| LLM | Groq free tier (`llama-3.3-70b-versatile`) | Free-tier only, per requirement. Groq's free-tier throughput comfortably supports the 1–2 LLM calls per agent hop this graph needs; provider is swappable via `LLM_PROVIDER` in `config.py`. |
+| LLM | Groq free tier (`openai/gpt-oss-120b`) | Free-tier only, per requirement. Groq's free-tier throughput comfortably supports the 1–2 LLM calls per agent hop this graph needs; provider is swappable via `LLM_PROVIDER` in `config.py`. Groq periodically retires models (this replaced an earlier `llama-3.3-70b-versatile` default once that endpoint was removed), so `GROQ_MODEL` is env-configurable rather than hardcoded. |
 | Retrieval | Vectorless / reasoning-based (see §4) | Corpus is small; better handles the deliberate cross-doc inconsistency; avoids extra infra. No vector DB needed, so no pgvector/Qdrant dependency. |
 | Ticket store | SQLite, seeded from `tickets.json` | Zero infrastructure, file-based, fully Free-Tier compatible; ticket actions are real writes, not re-reads of static JSON. |
 | Backend | FastAPI | Required by the brief; thin layer exposing `/chat` and `/tickets/{id}`. |

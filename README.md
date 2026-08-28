@@ -152,7 +152,7 @@ EBS volume (within the Free Tier's 30 GB allowance).
 |---|---|---|
 | `LLM_PROVIDER` | `groq` | Only provider wired up; structured to add others in `app/config.py`. |
 | `GROQ_API_KEY` | — | Required. Free tier: https://console.groq.com/keys |
-| `GROQ_MODEL` | `llama-3.3-70b-versatile` | |
+| `GROQ_MODEL` | `openai/gpt-oss-120b` | Check `https://console.groq.com/docs/models` if this 404s — Groq's free-tier model lineup changes over time. |
 | `LLM_TEMPERATURE` | `0.1` | Low on purpose — classification/extraction, not creative writing. |
 | `RAG_CONFIDENCE_THRESHOLD` | `0.55` | Below this, RAG hands back to the router → ticket created. |
 

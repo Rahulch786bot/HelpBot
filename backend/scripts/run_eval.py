@@ -11,9 +11,15 @@ Usage:
 import argparse
 import re
 import sys
+import time
 from pathlib import Path
 
 import requests
+
+# Windows consoles default to a legacy codepage (cp1252) that can't encode
+# characters some models emit (e.g. U+2011 non-breaking hyphen), which would
+# otherwise crash this script's own print() calls mid-run.
+sys.stdout.reconfigure(encoding="utf-8", errors="replace")
 
 QUERY_RE = re.compile(r'^\d+\.\s+"(.+)"')
 
@@ -58,6 +64,7 @@ def main():
             passed += 1
         except Exception as e:  # noqa: BLE001 -- this is a dev sanity script
             print(f"Q: {q}\n   ERROR: {e}\n")
+        time.sleep(3)  # stay under Groq free-tier tokens-per-minute limits across a full run
 
     print(f"{passed}/{len(queries)} queries returned a response without error.")
     print("This is NOT automated grading -- eyeball each answer against eval/test-queries.md's expectations.")

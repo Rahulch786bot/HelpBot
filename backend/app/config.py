@@ -18,7 +18,7 @@ load_dotenv()
 # Gemini free tier (stricter daily quotas at the time of writing).
 LLM_PROVIDER = os.getenv("LLM_PROVIDER", "groq")
 GROQ_API_KEY = os.getenv("GROQ_API_KEY", "")
-GROQ_MODEL = os.getenv("GROQ_MODEL", "llama-3.3-70b-versatile")
+GROQ_MODEL = os.getenv("GROQ_MODEL", "openai/gpt-oss-120b")
 
 # Low-temperature everywhere: this is a helpdesk assistant, not a
 # creative writer. We want consistent routing/classification behavior.
@@ -45,5 +45,11 @@ def get_llm(temperature: float | None = None):
                 "GROQ_API_KEY is not set. Get a free key at "
                 "https://console.groq.com/keys and put it in backend/.env"
             )
-        return ChatGroq(model=GROQ_MODEL, temperature=temp, api_key=GROQ_API_KEY)
+        llm = ChatGroq(model=GROQ_MODEL, temperature=temp, api_key=GROQ_API_KEY)
+        # The RAG agent sends the whole knowledge-base corpus on every call,
+        # which is token-heavy relative to Groq's free-tier per-minute limit
+        # for larger models -- a burst of requests (e.g. the eval script) can
+        # trip a transient 429. Retry with backoff rather than failing the
+        # whole request outright.
+        return llm.with_retry(stop_after_attempt=4, wait_exponential_jitter=True)
     raise ValueError(f"Unsupported LLM_PROVIDER: {LLM_PROVIDER}")
